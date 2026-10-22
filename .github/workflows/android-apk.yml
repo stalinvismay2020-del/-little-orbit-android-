@@ -23,11 +23,13 @@ jobs:
           gradle-version: '8.9'
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
+      - name: Give APK a stable filename
+        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/little-orbit.apk
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: little-orbit-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/little-orbit.apk
           if-no-files-found: error
           retention-days: 30
       - name: Publish latest APK release
@@ -36,9 +38,8 @@ jobs:
           tag: latest
           name: Little Orbit — Latest Android APK
           body: 'Automatically built from the latest main branch. This is an unsigned debug APK intended for direct testing. Android may show an install warning because it is not distributed through Google Play.'
-          artifacts: app/build/outputs/apk/debug/app-debug.apk
+          artifacts: app/build/outputs/apk/debug/little-orbit.apk
           artifactContentType: application/vnd.android.package-archive
-          artifactName: little-orbit.apk
           allowUpdates: true
           replacesArtifacts: true
           makeLatest: true
